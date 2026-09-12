@@ -1,0 +1,107 @@
+import type { Dictionary } from "./es";
+
+export const en: Dictionary = {
+  meta: {
+    title: "Julián Ramos · Fullstack Developer & Video Editor",
+    description:
+      "Julián Ramos portfolio. Full-stack web developer (React, Next.js, Node.js, MongoDB) and professional video editor based in Buenos Aires. Two profiles, one creator.",
+  },
+  nav: {
+    desarrollo: "Development",
+    video: "Editing & Video",
+    switchLabel: "Switch profile",
+  },
+  langLabel: "Language",
+  ctas: {
+    verProyectos: "See projects",
+    verTrabajos: "See work",
+    hablar: "Let's talk",
+    otrosPerfil: "See my other profile",
+  },
+  common: {
+    demo: "Demo",
+    codigo: "Repository",
+    produccion: "In production",
+    destacado: "Featured",
+    colaborativo: "Collaborative",
+    todos: "All",
+  },
+  dev: {
+    role: "Development",
+    hero: {
+      kicker: "[ 00:00:00:00 ] Profile · Development",
+      titleLine1: "Full Stack",
+      titleLine2: "Developer",
+      lead: "Freelance full-stack web developer since 2023, specialized in the MERN stack and Next.js. Systems Engineering student at UNLa. I build scalable web products with clean architecture and best practices.",
+      roles: ["React", "Next.js", "TypeScript", "Node.js", "MongoDB", "Web Architecture"],
+      statYears: "years freelance",
+      statProjects: "projects",
+      statProd: "in production",
+      sub: "Open to new projects and opportunities.",
+    },
+    skills: {
+      kicker: "// Stack",
+      title: "Technical stack",
+      lead: "What I use to build a product end to end, from database to the last UI layer.",
+    },
+    projects: {
+      kicker: "// Projects",
+      title: "Cases & projects",
+      lead: "A small sample of production products and projects that show how I work in teams and against real APIs.",
+    },
+  },
+  video: {
+    role: "Editing & Video",
+    hero: {
+      kicker: "[ The other profile ] Editing & Video",
+      titleLine1: "Video Editor",
+      titleLine2: "& Short Content",
+      lead: "Video editor with almost two years of experience working with creators, brands and agencies. Specialized in retention content for social media and long-form podcast post-production.",
+      roles: ["Reels · Shorts · TikToks", "Long-form podcasts", "Meta Ads", "3-cam multicam sync"],
+      statYears: "years editing",
+      statClients: "clients",
+      statCams: "multicam",
+      sub: "Content that stops the scroll and keeps attention.",
+    },
+    services: {
+      kicker: "// Services",
+      title: "From raw material to the final cut",
+      lead: "An organized process from files to delivery, no shortcuts.",
+      workflowTitle: "Workflow",
+      specialsTitle: "Specialties",
+    },
+    clients: {
+      kicker: "// Recent work",
+      title: "Clients",
+      lead: "Pick a client to see their cuts. Content published on social media.",
+      all: "All",
+      personal: "Personal projects",
+      personalLead: "Advanced editing practice, Iman Gadzhi style.",
+    },
+  },
+  contact: {
+    kicker: "// Contact",
+    title: "Let's work together?",
+    lead: "Message me on WhatsApp and I'll reply right away. You can also email me or connect on LinkedIn.",
+    form: {
+      nombre: "Your name",
+      nombrePh: "What's your name?",
+      perfil: "Area of interest",
+      perfilDev: "Web development",
+      perfilVideo: "Video editing",
+      mensaje: "Message",
+      mensajePh: "Tell me about your project…",
+      enviar: "Open WhatsApp",
+      nota: "The button opens your WhatsApp with the message already written.",
+    },
+    alternativos: "Other channels",
+    mailDev: "Dev contact",
+    mailVideo: "Editing contact",
+    whatsappLabel: "Message me on WhatsApp",
+  },
+  footer: {
+    hecho: "Designed & built by",
+    www: "julianramos.com.ar",
+    derechos: "© All brands and clients mentioned belong to their owners.",
+  },
+};
