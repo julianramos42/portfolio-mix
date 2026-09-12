@@ -41,3 +41,12 @@ Deploy objetivo: Vercel + dominio `julianramos.com.ar`.
 - Pre-fetch off en links internos con props estáticas en SSR vía `prefetch={false}` en links del navbar.
 - Security headers (CSP etc.) en `next.config.ts`. No commitear secrets.
 - Runear `npm run lint` y `npm run build` antes de dar tarea por terminada. Next 16: consultar `node_modules/next/dist/docs/` ante APIs nuevas (proxy.ts, root-params, params async).
+
+## Deploy (runbook, requiere cuenta del usuario)
+
+Los pasos de GitHub/Vercel/dominio necesitan login interactivo, así que los hace Julián:
+
+1. **Blob (una vez)**: en Vercel crear store Blob, copiar token read-write a `.env.local` como `BLOB_READ_WRITE_TOKEN=...` (ver `.env.example`). Luego `npm run blob:upload` → sube los 31 `.mp4` de `scripts/output/`, escribe `src/content/video-srcs.ts` con las URLs, y eso se commitea. Si Space falla (379MB vs 1GB), recortar cortes en `src/content/videos.ts`.
+2. **GitHub**: `git remote add origin https://github.com/julianramos42/portfolio-opencode.git` (o nombre preferido) + `git push -u origin main`. Los videos NO se suben (gitignored).
+3. **Vercel**: importar el repo, framework detecta Next.js 16. Build con `next build`. El dominio `julianramos.com.ar` (hoy apunta al sitio editor viejo): en Proyecto > Settings > Domains, agregarlo y cambiar los registros DNS en el panel del dominio según indique Vercel.
+4. Tras el primer deploy y con `video-srcs.ts` committeado, los cortes salen de Blob (CSP `media-src` ya permite `https:`).
