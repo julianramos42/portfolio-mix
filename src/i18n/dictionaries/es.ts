@@ -27,7 +27,7 @@ export const es = {
   dev: {
     role: "Desarrollo",
     hero: {
-      kicker: "[ 00:00:00:00 ] Perfil · Desarrollo",
+      kicker: "[ CH 01 ] Perfil · Desarrollo",
       titleLine1: "Full Stack",
       titleLine2: "Developer",
       lead: "Desarrollador web full stack freelance desde 2023, especializado en el ecosistema MERN y Next.js. Estudiante de la Licenciatura en Sistemas (UNLa). Construyo productos web escalables con arquitectura limpia y buenas prácticas.",
@@ -51,7 +51,7 @@ export const es = {
   video: {
     role: "Edición & Video",
     hero: {
-      kicker: "[ El otro perfil ] Edición & Video",
+      kicker: "[ CH 02 ] Edición & Video",
       titleLine1: "Video Editor",
       titleLine2: "& Short Content",
       lead: "Editor de video con casi dos años de experiencia trabajando con creadores, marcas y agencias. Especialista en contenido de retención para redes sociales y en postproducción de podcasts.",
@@ -73,6 +73,8 @@ export const es = {
       title: "Clientes",
       lead: "Elegí un cliente para ver sus cortes. Material publicado en redes.",
       all: "Todos",
+      prev: "Anterior",
+      next: "Siguiente",
       personal: "Proyectos personales",
       personalLead: "Práctica en ediciones avanzadas estilo Iman Gadzhi.",
     },

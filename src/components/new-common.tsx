@@ -51,40 +51,53 @@ export function SectionHeader({
 }
 
 export function Timeline({ className = "" }: { className?: string }) {
-  const rows = [
-    { count: 16, hue: "bg-accent/70", alt: "bg-line-strong", ratio: 0.5 },
-    { count: 16, hue: "bg-sky-400/50", alt: "bg-line", ratio: 0.35 },
-    { count: 10, hue: "bg-rec/45", alt: "bg-line", ratio: 0.6 },
+  const tracks = [
+    { label: "V1", name: "video", color: "bg-accent/70", alt: "bg-line-strong" },
+    { label: "A1", name: "audio", color: "bg-sky-400/50", alt: "bg-line" },
+    { label: "FX", name: "sonido", color: "bg-rec/45", alt: "bg-line" },
   ];
 
   return (
     <div className={`relative overflow-hidden rounded-md border border-line bg-bg/60 ${className}`} aria-hidden>
-      <div className="flex flex-col gap-1.5 p-3">
-        {rows.map((row, r) => (
-          <div key={r} className="flex items-center gap-1.5">
-            {Array.from({ length: row.count }).map((_, i) => {
-              const wide = (i % 3 === 0) as boolean;
-              return (
-                <div
-                  key={i}
-                  className={`h-4 rounded-[3px] ${wide ? row.alt : row.hue}`}
-                  style={{ width: `${6 + ((i * 7 + r * 11) % 10)}px` }}
-                />
-              );
-            })}
+      <div className="flex items-center justify-between border-b border-line px-3 py-2">
+        <span className="font-mono text-[10px] uppercase tracking-widest text-accent">
+          ● Timeline
+        </span>
+        <span className="font-mono text-[10px] tracking-widest text-faint">
+          00:00:00 / 00:04:21
+        </span>
+      </div>
+      <div className="space-y-2.5 p-3 pt-3.5">
+        {tracks.map((track, r) => (
+          <div key={track.name} className="flex items-center gap-2.5">
+            <span className="w-8 shrink-0 font-mono text-[9px] uppercase tracking-widest text-faint">
+              {track.label}
+            </span>
+            <div className="flex flex-1 items-center gap-[3px]">
+              {Array.from({ length: 14 }).map((_, i) => {
+                const wide = (i + r) % 4 === 0;
+                return (
+                  <div
+                    key={i}
+                    className={`h-6 flex-1 rounded-[3px] ${wide ? track.alt : track.color}`}
+                    style={{ maxWidth: `${14 + ((i * 13 + r * 19) % 26)}px` }}
+                  />
+                );
+              })}
+            </div>
           </div>
         ))}
       </div>
       <motion.div
-        className="absolute inset-y-0 top-0 w-px bg-accent shadow-[0_0_10px_2px_rgba(163,230,53,0.5)]"
-        initial={{ left: "6%" }}
-        animate={{ left: ["6%", "94%", "6%"] }}
+        className="absolute top-8 bottom-2 w-px bg-accent shadow-[0_0_10px_2px_rgba(163,230,53,0.5)]"
+        initial={{ left: "8%" }}
+        animate={{ left: ["8%", "92%", "8%"] }}
         transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
-        className="absolute top-0 h-2 w-2 -translate-x-1/2 rounded-full bg-accent"
-        initial={{ left: "6%" }}
-        animate={{ left: ["6%", "94%", "6%"] }}
+        className="absolute top-8 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-accent shadow-[0_0_8px_2px_rgba(163,230,53,0.6)]"
+        initial={{ left: "8%" }}
+        animate={{ left: ["8%", "92%", "8%"] }}
         transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
       />
     </div>

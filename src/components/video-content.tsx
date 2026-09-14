@@ -9,7 +9,7 @@ import { allVideos, personalVideos, type Video } from "@/content/videos";
 import { editingWorkflow, editingSpecials } from "@/content/services";
 import { Button, BgGrid, Marquee, SectionHeader, Timeline } from "./new-common";
 import { ContactSection } from "./contact-section";
-import { PlayIcon, RecordIcon } from "./icons";
+import { PlayIcon, RecordIcon, ChevronLeftIcon, ChevronRightIcon } from "./icons";
 
 function Stat({ value, label }: { value: string; label: string }) {
   return (
@@ -23,7 +23,7 @@ function Stat({ value, label }: { value: string; label: string }) {
 export function VideoGallery({ dict, locale }: { dict: Dictionary; locale: Locale }) {
   const v = dict.video.clients;
   const [filter, setFilter] = useState<string>("all");
-  const [active, setActive] = useState<Video | null>(null);
+  const [active, setActive] = useState<{ video: Video; list: Video[] } | null>(null);
 
   const list =
     filter === "all"
@@ -34,9 +34,18 @@ export function VideoGallery({ dict, locale }: { dict: Dictionary; locale: Local
 
   const tabs = [
     { id: "all", label: v.all },
+    ...clients.map((c) => ({ id: c.id, label: `${c.name} · ${c.year}` })),
     { id: "personal", label: v.personal },
-    ...clients.map((c) => ({ id: c.id, label: c.name })),
   ];
+
+  function step(dir: 1 | -1) {
+    setActive((current) => {
+      if (!current) return current;
+      const i = current.list.findIndex((video) => video.id === current.video.id);
+      const next = (i + dir + current.list.length) % current.list.length;
+      return { ...current, video: current.list[next] };
+    });
+  }
 
   return (
     <section className="border-t border-line">
@@ -65,38 +74,43 @@ export function VideoGallery({ dict, locale }: { dict: Dictionary; locale: Local
         ) : null}
 
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {list.map((video, i) => (
-            <button
-              key={video.id}
-              type="button"
-              onClick={() => setActive(video)}
-              className="group relative cursor-pointer overflow-hidden rounded-lg border border-line bg-surface text-left"
-            >
-              <div className="flex items-center gap-2 px-3 pb-2 pt-3">
-                <span className={`size-1.5 rounded-full`} style={{ background: video.clientId === "personal" ? "#9d9da7" : clients.find((c) => c.id === video.clientId)?.tone }} />
-                <span className="truncate font-mono text-[10px] uppercase tracking-widest text-faint">
-                  {video.clientId === "personal" ? v.personal : clients.find((c) => c.id === video.clientId)?.name}
-                </span>
-              </div>
-              <div className="relative aspect-video overflow-hidden bg-bg">
-                <Image
-                  src={video.poster}
-                  alt={video.title[locale]}
-                  fill
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                  className="object-cover opacity-80 transition-all duration-300 group-hover:scale-105 group-hover:opacity-100"
-                />
-              </div>
-              <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 bg-gradient-to-t from-black/80 to-transparent px-3 pb-2 pt-10">
-                <span className="truncate font-mono text-[10px] tracking-widest text-fg">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span className="flex size-7 items-center justify-center rounded-full bg-accent text-bg opacity-0 transition-all group-hover:opacity-100">
-                  <PlayIcon className="size-3.5 translate-x-px" />
-                </span>
-              </div>
-            </button>
-          ))}
+          {list.map((video, i) => {
+            const client = video.clientId === "personal" ? null : clients.find((c) => c.id === video.clientId);
+            return (
+              <button
+                key={video.id}
+                type="button"
+                onClick={() => setActive({ video, list })}
+                className="group relative cursor-pointer overflow-hidden rounded-lg border border-line bg-surface text-left"
+              >
+                <div className="flex items-center gap-2 px-3 pb-2 pt-3">
+                  <span className={`size-1.5 rounded-full`} style={{ background: client?.tone ?? "#9d9da7" }} />
+                  <span className="truncate font-mono text-[10px] uppercase tracking-widest text-faint">
+                    {client ? `${client.name} · ${client.year}` : v.personal}
+                  </span>
+                </div>
+                <div className="relative aspect-video overflow-hidden bg-bg">
+                  <Image
+                    src={video.poster}
+                    alt={video.title[locale]}
+                    fill
+                    loading="lazy"
+                    fetchPriority="low"
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    className="object-cover opacity-80 transition-all duration-300 group-hover:scale-105 group-hover:opacity-100"
+                  />
+                </div>
+                <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 bg-gradient-to-t from-black/80 to-transparent px-3 pb-2 pt-10">
+                  <span className="truncate font-mono text-[10px] tracking-widest text-fg">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="flex size-7 items-center justify-center rounded-full bg-accent text-bg opacity-0 transition-all group-hover:opacity-100">
+                    <PlayIcon className="size-3.5 translate-x-px" />
+                  </span>
+                </div>
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -111,7 +125,7 @@ export function VideoGallery({ dict, locale }: { dict: Dictionary; locale: Local
           >
             <div className="flex items-center justify-between gap-3 border-b border-line px-4 py-3">
               <p className="truncate font-mono text-xs uppercase tracking-widest text-muted">
-                {active.title[locale]}
+                {active.video.title[locale]}
               </p>
               <button
                 type="button"
@@ -122,13 +136,35 @@ export function VideoGallery({ dict, locale }: { dict: Dictionary; locale: Local
               </button>
             </div>
             <video
-              src={active.src}
-              poster={active.poster}
+              key={active.video.id}
+              src={active.video.src}
+              poster={active.video.poster}
               controls
               autoPlay
               playsInline
               className="aspect-video w-full bg-black"
             />
+            <div className="flex items-center justify-between border-t border-line px-4 py-2.5">
+              <button
+                type="button"
+                onClick={() => step(-1)}
+                className="flex cursor-pointer items-center gap-2 rounded-full border border-line px-4 py-1.5 font-mono text-xs uppercase tracking-widest text-muted transition-colors hover:border-accent hover:text-accent"
+              >
+                  <ChevronLeftIcon className="size-3.5" />
+                  {v.prev}
+              </button>
+              <span className="font-mono text-[11px] tracking-widest text-faint">
+                {active.list.findIndex((x) => x.id === active.video.id) + 1} / {active.list.length}
+              </span>
+              <button
+                type="button"
+                onClick={() => step(1)}
+                className="flex cursor-pointer items-center gap-2 rounded-full border border-line px-4 py-1.5 font-mono text-xs uppercase tracking-widest text-muted transition-colors hover:border-accent hover:text-accent"
+              >
+                {v.next}
+                  <ChevronRightIcon className="size-3.5" />
+                </button>
+            </div>
           </div>
         </div>
       ) : null}

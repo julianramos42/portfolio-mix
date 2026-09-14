@@ -22,8 +22,8 @@ const root = join(__dirname, "..");
 const outDir = join(root, "scripts", "output");
 const targetFile = join(root, "src", "content", "video-srcs.ts");
 
-function loadToken() {
-  const fromEnv = process.env.BLOB_READ_WRITE_TOKEN;
+function loadEnv(key: string): string | null {
+  const fromEnv = process.env[key];
   if (fromEnv) return fromEnv;
   for (const file of [".env.local", ".vercel/.env.development.local"]) {
     const p = join(root, file);
@@ -31,14 +31,20 @@ function loadToken() {
     const line = readFileSync(p, "utf8")
       .split(/\r?\n/)
       .map((l) => l.trim())
-      .find((l) => /^BLOB_READ_WRITE_TOKEN=/.test(l));
-    if (line) return line.slice(line.indexOf("=") + 1).trim();
+      .find((l) => l.startsWith(`${key}=`));
+    if (line) return line.slice(key.length + 1).trim();
   }
   return null;
 }
 
 async function main() {
-  const token = loadToken();
+  const token = loadEnv("BLOB_READ_WRITE_TOKEN");
+  if (!token) {
+    console.error("Falta BLOB_READ_WRITE_TOKEN.");
+    console.error("Crea un store Blob en https://vercel.com y pega el token en .env.local (BLOB_READ_WRITE_TOKEN=...) o BLOB_STORE_ID si es requerido por tu store.");
+    process.exit(1);
+  }
+  const storeId = loadEnv("BLOB_STORE_ID");
   if (!token) {
     console.error("Falta BLOB_READ_WRITE_TOKEN.");
     console.error("Crea un store Blob en https://vercel.com y pega el token en .env.local (BLOB_READ_WRITE_TOKEN=...)");
@@ -71,6 +77,7 @@ async function main() {
           contentType: "video/mp4",
           cacheControlMaxAge: 31536000,
           token,
+          ...(storeId ? { storeId } : {}),
         });
         entries[id] = url;
         uploadedBytes += bytes;

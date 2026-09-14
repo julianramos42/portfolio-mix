@@ -25,16 +25,16 @@ export const skillGroups: SkillGroup[] = [
   {
     id: "architecture",
     title: { es: "Arquitectura y buenas prácticas", en: "Architecture & best practices" },
-    items: ["SOLID", "Clean Code", "MVC / Capas", "Scrum", "Git / GitHub", "Postman", "SonarQube"],
+    items: ["SOLID", "Clean Code", "MVC / Capas", "Scrum", "Git / GitHub", "Postman"],
   },
   {
     id: "academico",
     title: { es: "Formación académica", en: "Academic background" },
-    items: ["Java (POO)", "C / C++ (concurrencia)", "Algoritmos y estructuras", "Ingeniería de Software", "Bases de datos relacionales"],
+    items: ["Java (POO)", "Algoritmos y estructuras", "Ingeniería de Software", "Bases de datos relacionales"],
   },
   {
     id: "herramientas",
     title: { es: "Herramientas e IA", en: "Tools & AI" },
-    items: ["GitHub Copilot", "OpenCode", "CodeRabbit", "Adobe Premiere Pro", "ClickUp", "Airtable"],
+    items: ["GitHub Copilot", "OpenCode", "ClickUp", "Airtable"],
   },
 ];

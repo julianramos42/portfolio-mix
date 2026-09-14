@@ -29,7 +29,7 @@ export const en: Dictionary = {
   dev: {
     role: "Development",
     hero: {
-      kicker: "[ 00:00:00:00 ] Profile · Development",
+      kicker: "[ CH 01 ] Profile · Development",
       titleLine1: "Full Stack",
       titleLine2: "Developer",
       lead: "Freelance full-stack web developer since 2023, specialized in the MERN stack and Next.js. Systems Engineering student at UNLa. I build scalable web products with clean architecture and best practices.",
@@ -53,7 +53,7 @@ export const en: Dictionary = {
   video: {
     role: "Editing & Video",
     hero: {
-      kicker: "[ The other profile ] Editing & Video",
+      kicker: "[ CH 02 ] Editing & Video",
       titleLine1: "Video Editor",
       titleLine2: "& Short Content",
       lead: "Video editor with almost two years of experience working with creators, brands and agencies. Specialized in retention content for social media and long-form podcast post-production.",
@@ -75,6 +75,8 @@ export const en: Dictionary = {
       title: "Clients",
       lead: "Pick a client to see their cuts. Content published on social media.",
       all: "All",
+      prev: "Previous",
+      next: "Next",
       personal: "Personal projects",
       personalLead: "Advanced editing practice, Iman Gadzhi style.",
     },

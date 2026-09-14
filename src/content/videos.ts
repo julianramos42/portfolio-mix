@@ -46,41 +46,63 @@ const videoMap: Record<string, string> = {
   "31": "josue",
 };
 
-export const allVideos: Video[] = Object.entries(videoMap)
-  .sort(([a], [b]) => Number(a) - Number(b))
-  .map(([id, clientId]) => {
-    const sequence = Object.entries(videoMap)
+function buildVideo(id: string, clientId: string): Video {
+  const sequence =
+    Object.entries(videoMap)
       .filter(([, value]) => value === clientId)
       .sort(([a], [b]) => Number(a) - Number(b))
       .map(([videoId]) => videoId)
       .indexOf(id) + 1;
 
-    const client = clients.find((c) => c.id === clientId);
+  const client = clients.find((c) => c.id === clientId);
 
-    if (client) {
-      return {
-        id,
-        clientId,
-        poster: `/posters/${id}.jpg`,
-        src: videoSrcs[id] ?? `/videos/${id}.mp4`,
-        title: {
-          es: `${client.name} Â· Corte ${sequence}`,
-          en: `${client.name} Â· Cut ${sequence}`,
-        },
-      };
-    }
-
+  if (client) {
     return {
       id,
       clientId,
       poster: `/posters/${id}.jpg`,
       src: videoSrcs[id] ?? `/videos/${id}.mp4`,
       title: {
-        es: `Proyecto personal Â· PrÃ¡ctica ${sequence}`,
-        en: `Personal project Â· Practice ${sequence}`,
+        es: `${client.name} · Corte ${sequence}`,
+        en: `${client.name} · Cut ${sequence}`,
       },
     };
-  });
+  }
+
+  return {
+    id,
+    clientId,
+    poster: `/posters/${id}.jpg`,
+    src: videoSrcs[id] ?? `/videos/${id}.mp4`,
+    title: {
+      es: `Proyecto personal · Práctica ${sequence}`,
+      en: `Personal project · Practice ${sequence}`,
+    },
+  };
+}
+
+export const allVideos: Video[] = [
+  ...Object.entries(videoMap)
+    .filter(([, value]) => value !== PERSONAL)
+    .sort(([a], [b]) => Number(a) - Number(b))
+    .sort(([, v1], [, v2]) => {
+      const i1 = clients.findIndex((c) => c.id === v1);
+      const i2 = clients.findIndex((c) => c.id === v2);
+      return i1 - i2;
+    })
+    .map(([id, clientId]) => buildVideo(id, clientId)),
+  ...Object.entries(videoMap)
+    .filter(([, value]) => value === PERSONAL)
+    .sort(([a], [b]) => Number(a) - Number(b))
+    .map(([id, clientId]) => buildVideo(id, clientId)),
+];
 
 export const personalVideos = allVideos.filter((v) => v.clientId === PERSONAL);
+
 export const clientVideos = allVideos.filter((v) => v.clientId !== PERSONAL);
+
+export const allVideosByClient = (clientId: string) =>
+  allVideos.filter((v) => v.clientId === clientId);
+
+export const allVideosForClient = (clientId: string) =>
+  allVideos.filter((v) => v.clientId === clientId);

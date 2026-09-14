@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import { useRef, useState } from "react";
+import { Code2, Clapperboard } from "lucide-react";
 import type { Locale } from "@/lib/i18n-types";
 import type { Dictionary } from "@/i18n";
 
@@ -18,6 +19,7 @@ export function ProfileSwitch({
   const pathname = usePathname();
   const router = useRouter();
   const flashTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const navTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const profile: Profile =
     pathname === `/${locale}/video` ? "video" : "development";
@@ -26,13 +28,21 @@ export function ProfileSwitch({
   function go(next: Profile) {
     if (next === profile) return;
     setFlash(true);
-    flashTimer.current = setTimeout(() => {
+    if (flashTimer.current) clearTimeout(flashTimer.current);
+    if (navTimer.current) clearTimeout(navTimer.current);
+    flashTimer.current = setTimeout(() => setFlash(false), 300);
+    navTimer.current = setTimeout(() => {
       router.push(next === "video" ? `/${locale}/video` : `/${locale}`);
-    }, 180);
+    }, 120);
   }
 
   const btn =
-    "relative z-10 flex-1 rounded-full px-4 py-1.5 font-mono text-xs uppercase tracking-widest transition-colors duration-200 cursor-pointer";
+    "relative z-10 flex flex-1 items-center justify-center gap-1.5 rounded-full px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest transition-colors duration-200 cursor-pointer";
+
+  const opts = [
+    { id: "development" as const, label: dict.nav.desarrollo, Icon: Code2 },
+    { id: "video" as const, label: dict.nav.video, Icon: Clapperboard },
+  ];
 
   return (
     <div className="relative">
@@ -42,30 +52,30 @@ export function ProfileSwitch({
         animate={{ opacity: flash ? 1 : 0 }}
         transition={{ duration: 0.09, ease: "linear" }}
       />
-      <div className="relative flex h-9 w-44 items-center rounded-full border border-line bg-surface p-1 text-muted">
+      <div className="relative flex items-center rounded-full border border-line bg-surface p-1">
         <div className="relative flex w-full">
           <motion.div
             aria-hidden
-            className="absolute inset-y-0 w-1/2 rounded-full border border-accent/40 bg-raised"
+            className="absolute inset-y-0 w-1/2 rounded-full border border-accent/40 bg-raised shadow-[0_0_12px_rgba(163,230,53,0.12)]"
             animate={{ left: profile === "video" ? "50%" : "0%" }}
-            transition={{ type: "spring", stiffness: 500, damping: 38 }}
+            transition={{ type: "spring", stiffness: 480, damping: 40 }}
           />
-          <button
-            type="button"
-            onClick={() => go("development")}
-            aria-current={profile === "development"}
-            className={`${btn} ${profile === "development" ? "text-accent" : ""}`}
-          >
-            {dict.nav.desarrollo}
-          </button>
-          <button
-            type="button"
-            onClick={() => go("video")}
-            aria-current={profile === "video"}
-            className={`${btn} ${profile === "video" ? "text-accent" : ""}`}
-          >
-            {dict.nav.video}
-          </button>
+          {opts.map(({ id, label, Icon }) => (
+            <button
+              key={id}
+              type="button"
+              onClick={() => go(id)}
+              aria-current={profile === id}
+              className={`${btn} ${
+                profile === id
+                  ? "text-accent"
+                  : "text-muted hover:text-fg"
+              }`}
+            >
+              <Icon className="size-3.5 shrink-0" />
+              <span className="whitespace-nowrap">{label}</span>
+            </button>
+          ))}
         </div>
       </div>
     </div>

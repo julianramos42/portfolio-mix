@@ -75,11 +75,19 @@ export const editingSpecials: EditorService[] = [
     },
   },
   {
-    id: "ads",
-    title: { es: "Meta Ads & marketing", en: "Meta Ads & marketing" },
+    id: "vlogs",
+    title: { es: "Vlogs y storytelling", en: "Vlogs & storytelling" },
     description: {
-      es: "Diagnóstico y gestión de campañas para concesionarias de autos usados: estructura CBO, Targeting Advantage+, funnels por DM y copys.",
-      en: "Campaign diagnosis and management for used-car dealerships: CBO structure, Advantage+ targeting, DM funnels and copy.",
+      es: "Edición narrativa para vlogs y marca personal: ritmo, subtítulos y estructura que mantienen el interés de principio a fin.",
+      en: "Narrative editing for vlogs and personal brands: pacing, captions and structure that keep viewers hooked from start to finish.",
+    },
+  },
+  {
+    id: "branding",
+    title: { es: "Artes y branding para canales", en: "Channel art & branding" },
+    description: {
+      es: "Packs de arte para YouTube e Instagram: títulos animados, lower thirds y una estética de marca consistente en cada publicación.",
+      en: "Art packs for YouTube and Instagram: animated titles, lower thirds and a consistent brand look across every post.",
     },
   },
 ];
