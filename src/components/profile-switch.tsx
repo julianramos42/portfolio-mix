@@ -56,8 +56,8 @@ export function ProfileSwitch({
         <div className="relative flex w-full">
           <motion.div
             aria-hidden
-            className="absolute inset-y-0 w-1/2 rounded-full border border-accent/40 bg-raised shadow-[0_0_12px_rgba(163,230,53,0.12)]"
-            animate={{ left: profile === "video" ? "50%" : "0%" }}
+            className="absolute inset-y-0.5 left-1 w-[calc(50%-8px)] rounded-full bg-raised shadow-[0_0_10px_rgba(163,230,53,0.12)] ring-1 ring-accent/30"
+            animate={{ left: profile === "video" ? "calc(50% + 4px)" : "4px" }}
             transition={{ type: "spring", stiffness: 480, damping: 40 }}
           />
           {opts.map(({ id, label, Icon }) => (

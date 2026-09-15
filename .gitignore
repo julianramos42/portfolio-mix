@@ -47,3 +47,6 @@ next-env.d.ts
 /scripts/*.log
 /server.log
 /server.err.log
+
+# cortes de origen del editor (van a Blob, no a git)
+/Editados/

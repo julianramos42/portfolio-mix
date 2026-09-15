@@ -113,7 +113,7 @@ export function ContactSection({
                 type="submit"
                 className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-md bg-accent px-6 py-3 font-mono text-xs uppercase tracking-widest text-bg transition-all hover:bg-accent-soft"
               >
-                <WhatsappIcon className="size-4" />
+                <WhatsappIcon className="size-5" />
                 {dict.contact.form.enviar}
               </button>
               <span className="text-xs text-faint">{dict.contact.form.nota}</span>
@@ -128,7 +128,13 @@ export function ContactSection({
               {channels.map(({ id, label, value, href, Icon }) => (
                 <li key={id} className="flex items-center justify-between gap-3 px-4 py-3.5">
                   <div className="flex min-w-0 items-center gap-3">
-                    {Icon ? <Icon className="size-4 shrink-0 text-muted" /> : null}
+                    {Icon ? (
+                      <Icon
+                        className={`size-5 shrink-0 ${
+                          id === "whatsapp" ? "text-accent" : "text-muted"
+                        }`}
+                      />
+                    ) : null}
                     <div className="min-w-0">
                       <p className="text-xs text-muted">{label}</p>
                       <button

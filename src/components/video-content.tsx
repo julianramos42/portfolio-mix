@@ -34,7 +34,9 @@ export function VideoGallery({ dict, locale }: { dict: Dictionary; locale: Local
 
   const tabs = [
     { id: "all", label: v.all },
-    ...clients.map((c) => ({ id: c.id, label: `${c.name} · ${c.year}` })),
+    ...[...clients]
+      .sort((a, b) => b.year.localeCompare(a.year))
+      .map((c) => ({ id: c.id, label: `${c.name} · ${c.year}` })),
     { id: "personal", label: v.personal },
   ];
 

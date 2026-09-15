@@ -44,6 +44,12 @@ const videoMap: Record<string, string> = {
   "29": "josue",
   "30": "josue",
   "31": "josue",
+  "32": "republica",
+  "33": "republica",
+  "34": "republica",
+  "35": "infinity",
+  "36": "infinity",
+  "37": "infinity",
 };
 
 function buildVideo(id: string, clientId: string): Video {

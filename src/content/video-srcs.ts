@@ -1,4 +1,4 @@
-// Generado por `npm run blob:upload`. No editar a mano.
+// Generado por `npm run blob:upload` (o script one-off). No editar a mano.
 // Mapea id de video -> URL pública en Vercel Blob.
 export const videoSrcs: Record<string, string> = {
   "1": "https://3l2scxmqzx27frgf.public.blob.vercel-storage.com/videos/1.mp4",
@@ -32,4 +32,10 @@ export const videoSrcs: Record<string, string> = {
   "29": "https://3l2scxmqzx27frgf.public.blob.vercel-storage.com/videos/29.mp4",
   "30": "https://3l2scxmqzx27frgf.public.blob.vercel-storage.com/videos/30.mp4",
   "31": "https://3l2scxmqzx27frgf.public.blob.vercel-storage.com/videos/31.mp4",
+  "32": "https://3l2scxmqzx27frgf.public.blob.vercel-storage.com/videos/32.mp4",
+  "33": "https://3l2scxmqzx27frgf.public.blob.vercel-storage.com/videos/33.mp4",
+  "34": "https://3l2scxmqzx27frgf.public.blob.vercel-storage.com/videos/34.mp4",
+  "35": "https://3l2scxmqzx27frgf.public.blob.vercel-storage.com/videos/35.mp4",
+  "36": "https://3l2scxmqzx27frgf.public.blob.vercel-storage.com/videos/36.mp4",
+  "37": "https://3l2scxmqzx27frgf.public.blob.vercel-storage.com/videos/37.mp4",
 };
