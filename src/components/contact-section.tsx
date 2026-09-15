@@ -113,7 +113,7 @@ export function ContactSection({
                 type="submit"
                 className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-md bg-accent px-6 py-3 font-mono text-xs uppercase tracking-widest text-bg transition-all hover:bg-accent-soft"
               >
-                <WhatsappIcon className="size-5" />
+                <WhatsappIcon className="size-6" />
                 {dict.contact.form.enviar}
               </button>
               <span className="text-xs text-faint">{dict.contact.form.nota}</span>
@@ -130,7 +130,7 @@ export function ContactSection({
                   <div className="flex min-w-0 items-center gap-3">
                     {Icon ? (
                       <Icon
-                        className={`size-5 shrink-0 ${
+                        className={`size-6 shrink-0 ${
                           id === "whatsapp" ? "text-accent" : "text-muted"
                         }`}
                       />
