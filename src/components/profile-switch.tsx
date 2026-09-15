@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
-import { useRef, useState } from "react";
 import { Code2, Clapperboard } from "lucide-react";
 import type { Locale } from "@/lib/i18n-types";
 import type { Dictionary } from "@/i18n";
@@ -18,22 +17,12 @@ export function ProfileSwitch({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const flashTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const navTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
   const profile: Profile =
     pathname === `/${locale}/video` ? "video" : "development";
-  const [flash, setFlash] = useState(false);
 
   function go(next: Profile) {
     if (next === profile) return;
-    setFlash(true);
-    if (flashTimer.current) clearTimeout(flashTimer.current);
-    if (navTimer.current) clearTimeout(navTimer.current);
-    flashTimer.current = setTimeout(() => setFlash(false), 300);
-    navTimer.current = setTimeout(() => {
-      router.push(next === "video" ? `/${locale}/video` : `/${locale}`);
-    }, 120);
+    router.push(next === "video" ? `/${locale}/video` : `/${locale}`);
   }
 
   const btn =
@@ -46,17 +35,11 @@ export function ProfileSwitch({
 
   return (
     <div className="relative">
-      <motion.div
-        aria-hidden
-        className="pointer-events-none fixed inset-0 z-50 bg-fg"
-        animate={{ opacity: flash ? 1 : 0 }}
-        transition={{ duration: 0.09, ease: "linear" }}
-      />
       <div className="relative flex items-center rounded-full border border-line bg-surface p-1">
         <div className="relative flex w-full">
           <motion.div
             aria-hidden
-            className="absolute inset-y-0.5 left-1 w-[calc(50%-8px)] rounded-full bg-raised shadow-[0_0_10px_rgba(163,230,53,0.12)] ring-1 ring-accent/30"
+            className="absolute inset-y-0.5 left-1 w-[calc(50%-8px)] rounded-full bg-raised"
             animate={{ left: profile === "video" ? "calc(50% + 4px)" : "4px" }}
             transition={{ type: "spring", stiffness: 480, damping: 40 }}
           />
