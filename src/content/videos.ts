@@ -86,9 +86,10 @@ export const allVideos: Video[] = [
     .filter(([, value]) => value !== PERSONAL)
     .sort(([a], [b]) => Number(a) - Number(b))
     .sort(([, v1], [, v2]) => {
-      const i1 = clients.findIndex((c) => c.id === v1);
-      const i2 = clients.findIndex((c) => c.id === v2);
-      return i1 - i2;
+      const c1 = clients.find((c) => c.id === v1);
+      const c2 = clients.find((c) => c.id === v2);
+      const yearDiff = (c2?.year ?? "").localeCompare(c1?.year ?? "");
+      return yearDiff !== 0 ? yearDiff : (c2?.name ?? "").localeCompare(c1?.name ?? "");
     })
     .map(([id, clientId]) => buildVideo(id, clientId)),
   ...Object.entries(videoMap)

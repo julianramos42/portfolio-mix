@@ -3,16 +3,26 @@
 // src/content/video-srcs.ts con las URLs públicas.
 //
 // Requiere:
-//   1. Proyecto linkeado a Vercel (genera .vercel/ y su token de store) o
-//      variable de entorno/archivo .env.local con BLOB_READ_WRITE_TOKEN.
-//      En Vercel: Storage > Blob > "crear store" > copiar token read-write.
-//   2. Hobby: 1GB storage / 10GB transfer por mes.
+//   1. Token read-write del store Blob: pégalo en .env.local como
+//      BLOB_READ_WRITE_TOKEN=vercel_blob_rw_... (Vercel > Storage > Blob >
+//      "crear store" > copiar token read-write). Si tu store pide un id
+//      explícito: BLOB_STORE_ID=...
+//   2. Proyecto linkeado a Vercel (genera .vercel/) o .env.local.
+//
+// Hobby: 1GB storage / 10GB transfer por mes.
 //
 // Uso: npm run blob:upload
 // Los archivos quedan en https://<store>.public.blob.vercel-storage.com/videos/<id>.mp4
 // Commitear src/content/video-srcs.ts con las URLs nuevas para el deploy.
 
-import { createReadStream, existsSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import {
+  createReadStream,
+  existsSync,
+  readFileSync,
+  readdirSync,
+  statSync,
+  writeFileSync,
+} from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { put } from "@vercel/blob";
@@ -22,7 +32,7 @@ const root = join(__dirname, "..");
 const outDir = join(root, "scripts", "output");
 const targetFile = join(root, "src", "content", "video-srcs.ts");
 
-function loadEnv(key: string): string | null {
+function loadEnv(key) {
   const fromEnv = process.env[key];
   if (fromEnv) return fromEnv;
   for (const file of [".env.local", ".vercel/.env.development.local"]) {
@@ -32,7 +42,17 @@ function loadEnv(key: string): string | null {
       .split(/\r?\n/)
       .map((l) => l.trim())
       .find((l) => l.startsWith(`${key}=`));
-    if (line) return line.slice(key.length + 1).trim();
+    if (line) {
+      let value = line.slice(key.length + 1).trim();
+      if (
+        (value.startsWith('"') && value.endsWith('"')) ||
+        (value.startsWith("'") && value.endsWith("'")) ||
+        (value.startsWith("`") && value.endsWith("`"))
+      ) {
+        value = value.slice(1, -1).trim();
+      }
+      return value;
+    }
   }
   return null;
 }
@@ -41,13 +61,18 @@ async function main() {
   const token = loadEnv("BLOB_READ_WRITE_TOKEN");
   if (!token) {
     console.error("Falta BLOB_READ_WRITE_TOKEN.");
-    console.error("Crea un store Blob en https://vercel.com y pega el token en .env.local (BLOB_READ_WRITE_TOKEN=...) o BLOB_STORE_ID si es requerido por tu store.");
+    console.error(
+      "Crea un store Blob en https://vercel.com y pega el token en .env.local (BLOB_READ_WRITE_TOKEN=...) o BLOB_STORE_ID si es requerido por tu store."
+    );
     process.exit(1);
   }
+
   const storeId = loadEnv("BLOB_STORE_ID");
   if (!token) {
     console.error("Falta BLOB_READ_WRITE_TOKEN.");
-    console.error("Crea un store Blob en https://vercel.com y pega el token en .env.local (BLOB_READ_WRITE_TOKEN=...)");
+    console.error(
+      "Crea un store Blob en https://vercel.com y pega el token en .env.local (BLOB_READ_WRITE_TOKEN=...)"
+    );
     process.exit(1);
   }
 
@@ -81,7 +106,9 @@ async function main() {
         });
         entries[id] = url;
         uploadedBytes += bytes;
-        console.log(`  [${i + 1}/${files.length}] ${file} (${(bytes / 1e6).toFixed(1)}MB) -> ${url}`);
+        console.log(
+          `  [${i + 1}/${files.length}] ${file} (${(bytes / 1e6).toFixed(1)}MB) -> ${url}`
+        );
         break;
       } catch (err) {
         if (attempt === 3) {
@@ -96,7 +123,9 @@ async function main() {
   }
 
   if (process.exitCode) {
-    console.error("Hubo errores; revisá la salida. No se escribió video-srcs.ts.");
+    console.error(
+      "Hubo errores; revisá la salida. No se escribió video-srcs.ts."
+    );
     process.exit(process.exitCode);
   }
 
@@ -112,7 +141,9 @@ async function main() {
   ].join("\n");
 
   writeFileSync(targetFile, src, "utf8");
-  console.log(`\n✓ ${Object.keys(entries).length} videos subidos (${(uploadedBytes / 1e6).toFixed(1)}MB).`);
+  console.log(
+    `\n✓ ${Object.keys(entries).length} videos subidos (${(uploadedBytes / 1e6).toFixed(1)}MB).`
+  );
   console.log(`✓ Archivos en https://*.public.blob.vercel-storage.com/videos/<id>.mp4`);
   console.log(`✓ Actualizado ${targetFile}. Commitearlo y deploy.`);
 }
